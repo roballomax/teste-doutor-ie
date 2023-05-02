@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<indice>
+  <item pagina="1" titulo="Seção 1">
+    <item pagina="2" titulo="Seção 1.1">
+      <item pagina="3" titulo="Seção 1.1.1"/>
+      <item pagina="4" titulo="Seção 1.1.2"/>
+    </item>
+    <item pagina="5" titulo="Seção 1.2"/>
+  </item>
+  <item pagina="6" titulo="Seção 2"/>
+  <item pagina="7" titulo="Seção 3"/>
+</indice>

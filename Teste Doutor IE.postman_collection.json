@@ -1,0 +1,185 @@
+{
+	"info": {
+		"_postman_id": "ef5ea763-5bfa-405b-8992-ca2cc14ca814",
+		"name": "Teste Doutor IE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3549156"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/auth/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "login",
+							"value": "teste@teste.com",
+							"disabled": true
+						},
+						{
+							"key": "senha",
+							"value": "123456",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Busca Livros",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "5|XMSj0nate5aMKsRdBZtwD2oXM3FIorUOlSzbTHNT",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/api/v1/livros?title=Teste 1&index_title=Capítulo 1.1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"livros"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "Teste 1"
+						},
+						{
+							"key": "index_title",
+							"value": "Capítulo 1.1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastra Livros",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "1|myLqQ9Shhlrs4ex7SYeGrHL3eUqWeoRlnUGx8gMk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Teste Postman\",\r\n    \"index\" : [\r\n        {\r\n            \"title\": \"P Capítulo 1\",\r\n            \"page\": 1,\r\n            \"sub_indexes\":[]\r\n        },\r\n        {\r\n            \"title\": \"P Capítulo 2\",\r\n            \"page\": 15,\r\n            \"sub_indexes\": [\r\n                {\r\n                    \"title\": \"P Capítulo 2.1\",\r\n                    \"page\": 16,\r\n                    \"sub_indexes\":[]\r\n                },      \r\n                {\r\n                    \"title\": \"P Capítulo 2.2\",\r\n                    \"page\": 27,\r\n                    \"sub_indexes\": [\r\n                        {\r\n                            \"title\": \"P Capítulo 2.1.1\",\r\n                            \r\n                            \"sub_indexes\":[\r\n                                {\r\n                                    \"title\": \"P Capítulo 2.1.1.1\",\r\n                                    \"page\": 32,\r\n                                    \"sub_indexes\":[]\r\n                                },\r\n                                {\r\n                                    \"title\": \"P Capítulo 2.1.1.2\",\r\n                                    \"page\": 34,\r\n                                    \"sub_indexes\":[\r\n                                        {\r\n                                            \"title\": \"P Capítulo 2.1.1.2.1\",\r\n                                            \"page\": 36,\r\n                                            \"sub_indexes\":[]\r\n                                        },\r\n                                        {\r\n                                            \"title\": \"P Capítulo 2.1.1.2.2\",\r\n                                            \"page\": 38,\r\n                                            \"sub_indexes\":[]\r\n                                        },\r\n                                        {\r\n                                            \"title\": \"P Capítulo 2.1.1.2.3\",\r\n                                            \"page\": 42,\r\n                                            \"sub_indexes\":[\r\n                                                {\r\n                                                    \"title\": \"P Capítulo 2.1.1.2.3.1\",\r\n                                                    \"page\": 46,\r\n                                                    \"sub_indexes\":[]\r\n                                                },\r\n                                                {\r\n                                                    \"title\": \"P Capítulo 2.1.1.2.3.2\",\r\n                                                    \"page\": 49,\r\n                                                    \"sub_indexes\":[]\r\n                                                },\r\n                                                {\r\n                                                    \"title\": \"P Capítulo 2.1.1.2.3.3\",\r\n                                                    \"page\": 53,\r\n                                                    \"sub_indexes\":[]\r\n                                                }\r\n                                            ]\r\n                                        }\r\n                                    ]\r\n                                }\r\n                            ]\r\n                        }\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/livros",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"livros"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload XML indices",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "2|XmgM525txOH1SYDiatvKLyKz4pmKvL94usqhRJ3V",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "xml_file",
+							"type": "file",
+							"src": "///wsl.localhost/Ubuntu/home/roballomax/code/teste-doutor-ie/xml-exemplo.xml"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/api/v1/livros/:book_id/import-index-xml",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"livros",
+						":book_id",
+						"import-index-xml"
+					],
+					"variable": [
+						{
+							"key": "book_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

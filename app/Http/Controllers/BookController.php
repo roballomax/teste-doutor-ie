@@ -7,6 +7,7 @@ use App\Models\BookIndex;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -150,7 +151,7 @@ class BookController extends Controller
 
     }
 
-    public function importIndexXml(Request $request) 
+    public function importIndexXml(Request $request, int $bookId) 
     {
         $data = $request->all();
         $validator = Validator::make($data, [
@@ -161,11 +162,59 @@ class BookController extends Controller
             return response($validator->errors(), 422);
         }
 
-        // $xml = simplexml_load_string($);
+        try {
+            DB::beginTransaction();
 
-        // $json = json_encode($xml);
+            $xmlName = md5(date('dmYHis')) . '.xml';
+            $request->file('xml_file')->storeAs('/xml/imports/', $xmlName);
+            $xml = simplexml_load_string(Storage::disk('local')->get('/xml/imports/' . $xmlName));
+            
+            Storage::disk('local')->delete('/xml/imports/' . $xmlName);
+            $xmlCollection = collect(json_decode(json_encode($xml),true)['item']);
+    
+            $xmlCollection->each(function($item) use ($bookId) {
+                $this->importXmlData($item, $bookId);
+            });
+    
+            DB::commit();
+            return response([
+                "message" => "Xml de índices importado com sucesso!"
+            ]);
+        } catch (ValidationException $e) {
+            DB::rollback();
+            return response([
+                'message' => 'Xml com erro',
+                'error' => $e->getMessage()
+            ], 422);
+        }  catch (\Exception $e) {
+            DB::rollBack();
+            return response('Ocorreu um erro ao importar o XML', 400);
+        }
+    }
 
-        dd($request->file('xml_file'), $request->xml_file);
+    public function importXmlData($item, $bookId, $previousIndex = null)
+    {
+        $validator = Validator::make($item['@attributes'], [
+            'titulo' => ['required', 'string'],
+            'pagina' => ['required', 'integer'],
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        $bookIndex = new BookIndex();
+        $bookIndex->book_id = $bookId;
+        $bookIndex->index_id = $previousIndex;
+        $bookIndex->title = $item['@attributes']['titulo'];
+        $bookIndex->page = $item['@attributes']['pagina'];
+        $bookIndex->save();
+
+        if (isset($item['item']) && count($item['item'])) {
+            collect($item['item'])->each(function($itemIndex) use ($bookId, $previousIndex, $bookIndex) {
+                $this->importXmlData($itemIndex, $bookId, $bookIndex->id);
+            });
+        }
     }
 
 }
